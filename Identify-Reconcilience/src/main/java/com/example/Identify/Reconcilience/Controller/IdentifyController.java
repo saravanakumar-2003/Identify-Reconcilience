@@ -1,6 +1,7 @@
 package com.example.Identify.Reconcilience.Controller;
 
 import com.example.Identify.Reconcilience.DTO.ContactDTO;
+import com.example.Identify.Reconcilience.DTO.ReturnTypeDTO;
 import com.example.Identify.Reconcilience.Entity.ContactEntity;
 import com.example.Identify.Reconcilience.Service.IdentifyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +16,9 @@ public class IdentifyController {
     @Autowired
     IdentifyService identifyService;
 
-
-
+    //Controller to post and list contacts with /identify endpoint
     @PostMapping("/identify")
-    public ContactEntity addContact(@RequestBody ContactDTO contactDTO){
+    public ReturnTypeDTO addContact(@RequestBody ContactDTO contactDTO){
         return(identifyService.addContact(contactDTO));
 
     }

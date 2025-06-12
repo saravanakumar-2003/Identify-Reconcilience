@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.ConditionalOnIssuerLocationJwtDecoder;
 
+//Entity to create table for contacts in database
 @Entity
 @Table(name = "contacts")
 public class ContactEntity {

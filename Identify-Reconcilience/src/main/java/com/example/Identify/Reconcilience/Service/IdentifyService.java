@@ -1,6 +1,7 @@
 package com.example.Identify.Reconcilience.Service;
 
 import com.example.Identify.Reconcilience.DTO.ContactDTO;
+import com.example.Identify.Reconcilience.DTO.ReturnTypeDTO;
 import com.example.Identify.Reconcilience.Entity.ContactEntity;
 import com.example.Identify.Reconcilience.Repository.ContactRepository;
 import jakarta.transaction.Transactional;
@@ -17,14 +18,16 @@ public class IdentifyService {
     ContactRepository contactRepository;
 
     @Transactional
-    public ContactEntity addContact(ContactDTO contactDTO){
-        ContactEntity contactEntity = new ContactEntity();
-        List<ContactEntity> contacts = contactRepository.findAll();
+    public ReturnTypeDTO addContact(ContactDTO contactDTO){
+
+        ContactEntity contactEntity = new ContactEntity();           // Object used for saving in database table
+        ReturnTypeDTO returnTypeDTO = new ReturnTypeDTO();           // Object for returning contact
+        List<ContactEntity> contacts = contactRepository.findAll();  // Fetch list of contacts from database table
 
         boolean isPresent = false;
-        ContactEntity primaryContact = new ContactEntity();
+        ContactEntity primaryContact = new ContactEntity();          // Object used to store primary contact for future use
 
-        for(ContactEntity contact : contacts){ // Iterating through all records
+        for(ContactEntity contact : contacts){                       // Iterating through all records
             if(contact.getEmail().equals(contactDTO.getEmail()) || contact.getPhoneNumber().equals(contactDTO.getPhoneNumber())){   // Checking for similarity in phone number and email in primary records
 
                 if(!isPresent){
@@ -33,7 +36,7 @@ public class IdentifyService {
                     continue;
                 }
 
-                contactRepository.update(primaryContact.getId(), contact.getId());  // If found the link precedence is set to secondary and linked id is added and saved to database
+                contactRepository.update(primaryContact.getId(), contact.getId());  // Recods with same email or phone number is updated with linkedId as primary contact's ID and link precedence as secondary
 
             }
         }
@@ -51,7 +54,12 @@ public class IdentifyService {
             contactEntity.setLinkPrecedence("primary");
             contactRepository.save(contactEntity);
         }
-        return contactEntity;
+        returnTypeDTO.setPrimaryContactId(primaryContact.getId());
+        returnTypeDTO.setEmails(contactRepository.getEmails(primaryContact.getId()));
+        returnTypeDTO.setPhoneNumbers(contactRepository.getPhoneNumbers(primaryContact.getId()));
+        returnTypeDTO.setNumber(contactRepository.getIds(primaryContact.getId()));
+
+        return returnTypeDTO;
 
     }
 }
