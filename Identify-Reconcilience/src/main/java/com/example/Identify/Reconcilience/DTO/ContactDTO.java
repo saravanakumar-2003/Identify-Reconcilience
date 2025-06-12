@@ -1,5 +1,7 @@
 package com.example.Identify.Reconcilience.DTO;
 
+
+// Class for getting input from user in JSON format
 public class ContactDTO {
 
     private String phoneNumber;

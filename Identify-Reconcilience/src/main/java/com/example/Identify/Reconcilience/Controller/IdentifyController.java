@@ -18,8 +18,8 @@ public class IdentifyController {
 
 
     @PostMapping("/identify")
-    public void addContact(@RequestBody ContactDTO contactDTO){
-        identifyService.addContact(contactDTO);
+    public ContactEntity addContact(@RequestBody ContactDTO contactDTO){
+        return(identifyService.addContact(contactDTO));
 
     }
 }
