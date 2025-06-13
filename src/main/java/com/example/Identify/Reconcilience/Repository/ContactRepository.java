@@ -20,14 +20,17 @@ public interface ContactRepository extends JpaRepository<ContactEntity, Integer>
     void update(@Param("primaryContactId") int primaryContactId, @Param("contactId") int contactId, @Param("updatedAt")LocalDateTime updatedAt);
 
     //Query for fetching list of email with primary Id
-    @Query("SELECT email from ContactEntity WHERE linkedId = :primaryId")
-    List<String> getEmails(@Param("primaryId") int primaryId);
+    @Query("SELECT email from ContactEntity WHERE phoneNumber= :phone")
+    List<String> getEmails(@Param("phone") String phone);
 
     //Query for fetching list of phone numbers with primary ID
-    @Query("SELECT phoneNumber from ContactEntity WHERE linkedId = :primaryId")
-    List<String> getPhoneNumbers(@Param("primaryId") int primaryId);
+    @Query("SELECT phoneNumber from ContactEntity WHERE email = :email")
+    List<String> getPhoneNumbers(@Param("email") String email);
 
     // Query for fetching list of Ids of secondary entity with primary Id
-    @Query("SELECT id from ContactEntity WHERE linkedId = :primaryId")
-    List<Integer> getIds(@Param("primaryId") int primaryId);
+    @Query("SELECT id from ContactEntity WHERE email = :email OR phoneNumber = :phone")
+    List<Integer> getIds(@Param("email") String email, @Param("phone") String phone);
+
+    @Query("SELECT id FROM ContactEntity c WHERE (c.email = :email OR c.phoneNumber = :phoneNumber) AND c.linkPrecedence = 'primary' ")
+    int getPrimaryId(@Param("email") String email,@Param(("phoneNumber")) String phoneNumber);
 }

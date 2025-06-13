@@ -55,10 +55,10 @@ public class IdentifyService {
             contactRepository.save(contactEntity);
         }
 
-        returnTypeDTO.setPrimaryContactId(primaryContact.getId());
-        returnTypeDTO.setEmails(contactRepository.getEmails(primaryContact.getId()).stream().distinct().toList());
-        returnTypeDTO.setPhoneNumbers(contactRepository.getPhoneNumbers(primaryContact.getId()).stream().distinct().toList());
-        returnTypeDTO.setNumber(contactRepository.getIds(primaryContact.getId()));
+        returnTypeDTO.setPrimaryContactId(contactRepository.getPrimaryId(contactDTO.getEmail(), contactDTO.getPhoneNumber()));
+        returnTypeDTO.setEmails(contactRepository.getEmails(contactDTO.getPhoneNumber()).stream().distinct().toList());
+        returnTypeDTO.setPhoneNumbers(contactRepository.getPhoneNumbers(contactDTO.getEmail()).stream().distinct().toList());
+        returnTypeDTO.setNumber(contactRepository.getIds(contactDTO.getEmail(), contactDTO.getPhoneNumber()));
 
         return returnTypeDTO;
     }
