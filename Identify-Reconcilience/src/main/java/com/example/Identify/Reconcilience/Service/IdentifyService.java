@@ -56,8 +56,8 @@ public class IdentifyService {
         }
 
         returnTypeDTO.setPrimaryContactId(primaryContact.getId());
-        returnTypeDTO.setEmails(contactRepository.getEmails(primaryContact.getId()));
-        returnTypeDTO.setPhoneNumbers(contactRepository.getPhoneNumbers(primaryContact.getId()));
+        returnTypeDTO.setEmails(contactRepository.getEmails(primaryContact.getId()).stream().distinct().toList());
+        returnTypeDTO.setPhoneNumbers(contactRepository.getPhoneNumbers(primaryContact.getId()).stream().distinct().toList());
         returnTypeDTO.setNumber(contactRepository.getIds(primaryContact.getId()));
 
         return returnTypeDTO;
