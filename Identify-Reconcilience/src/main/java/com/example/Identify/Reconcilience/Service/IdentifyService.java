@@ -35,8 +35,8 @@ public class IdentifyService {
                     isPresent = true;
                     continue;
                 }
-
-                contactRepository.update(primaryContact.getId(), contact.getId());  // Recods with same email or phone number is updated with linkedId as primary contact's ID and link precedence as secondary
+                LocalDateTime updatedAt = LocalDateTime.now();       // Record updating time
+                contactRepository.update(primaryContact.getId(), contact.getId(),updatedAt);  // Recods with same email or phone number is updated with linkedId as primary contact's ID and link precedence as secondary
 
             }
         }
@@ -54,12 +54,12 @@ public class IdentifyService {
             contactEntity.setLinkPrecedence("primary");
             contactRepository.save(contactEntity);
         }
+
         returnTypeDTO.setPrimaryContactId(primaryContact.getId());
         returnTypeDTO.setEmails(contactRepository.getEmails(primaryContact.getId()));
         returnTypeDTO.setPhoneNumbers(contactRepository.getPhoneNumbers(primaryContact.getId()));
         returnTypeDTO.setNumber(contactRepository.getIds(primaryContact.getId()));
 
         return returnTypeDTO;
-
     }
 }
